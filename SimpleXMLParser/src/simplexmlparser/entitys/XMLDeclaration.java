@@ -2,14 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package simplexmlparser;
+package simplexmlparser.entitys;
 
 /**
  *
  * @author Tamaran
  */
-public enum TokenType {
-    
-    LEFT_BRACKET, RIGHT_BRACKET, STR, SLASH, QUEST;
+public class XMLDeclaration {
     
 }

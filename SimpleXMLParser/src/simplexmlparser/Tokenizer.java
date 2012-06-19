@@ -13,7 +13,8 @@ public class Tokenizer {
     private static final String STR_COMMENT = "<!--",
                                 STR_LEFT_BRACKET = "<",
                                 STR_RIGHT_BRACKET = ">",
-                                STR_SLASH = "/";
+                                STR_SLASH = "/",
+                                STR_QUEST = "?";
     
     private final TokenFactory factory = new TokenFactory();
     private final String s;
@@ -44,6 +45,8 @@ public class Tokenizer {
         }else{
             if(shiftcmp(STR_SLASH)){
                 readSlash();
+            }else if(shiftcmp(STR_QUEST)){
+                readQuestionMark();
             }else if(shiftcmp(STR_COMMENT)){
                 jumpOverComment();
                 readNext();
@@ -55,6 +58,11 @@ public class Tokenizer {
                 readString();
             } 
         }
+    }
+    
+    private void readQuestionMark(){
+        i++;
+        next = factory.createToken(STR_QUEST, TokenType.QUEST);
     }
     
     private void readSlash(){
@@ -109,5 +117,9 @@ public class Tokenizer {
             return true;
         }
         return false;
+    }
+    
+    public int getIndex(){
+        return i;
     }
 }
