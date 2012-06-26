@@ -1,19 +1,15 @@
-
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package simplexmlparser;
+package backend;
 
 /**
  *
  * @author Tamaran
  */
-public enum TokenType {
+public interface DistFunc {
     
-    LEFT_BRACKET, RIGHT_BRACKET, STR, SLASH, QUEST;
+    public double getDistance(Cluster c1, Cluster c2);
     
 }
-
-

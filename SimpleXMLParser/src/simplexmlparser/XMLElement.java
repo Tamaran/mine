@@ -1,9 +1,8 @@
-
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package simplexmlparser.entitys;
+package simplexmlparser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,4 +25,3 @@ public class XMLElement {
         props.put(k, v);
     }
 }
-

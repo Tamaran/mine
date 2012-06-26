@@ -1,11 +1,10 @@
+
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package simplexmlparser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -20,27 +19,31 @@ public class Tokenizer {
                                 STR_QUEST = "?";
     
     private final TokenFactory factory = new TokenFactory();
-    private final List tokens = new ArrayList();
     private final String s;
+    private Token next;
     private int i;
 
     public Tokenizer(String s) {
         this.s = s;
-        while(i < s.length()){
-            readNext();
-        }
-    }
-
-    public List getTokens() {
-        return tokens;
+        readNext();
     }
     
     
-
+    
+    public boolean hasNext(){
+        return next != null;
+    }
+    
+    public Token getNext(){
+        Token r = next;
+        readNext();
+        return r;
+    }
+    
     private void readNext(){
         moveToNextNonSpace();
         if(i >= s.length()){
-            return;
+            next = null;
         }else{
             if(shiftcmp(STR_SLASH)){
                 readSlash();
@@ -75,14 +78,16 @@ public class Tokenizer {
     }
     
     private void readRightBracket(){
-        addToken(STR_RIGHT_BRACKET, TokenType.RIGHT_BRACKET);
+        i++;
+        next = factory.createToken(STR_RIGHT_BRACKET, TokenType.RIGHT_BRACKET);
     }
     
     private void readString(){
         int j = i;
         while(j < s.length()&&!isStringEndChar(s.charAt(j)))
             j++;
-        addToken(s.substring(i, j), TokenType.STR);
+        next = factory.createToken(s.substring(i, j), TokenType.STR);
+        i = j;
     }
     
     private void moveToNextNonSpace(){
@@ -116,11 +121,8 @@ public class Tokenizer {
         return false;
     }
     
-    private void addToken(String s, TokenType t){
-        tokens.add(factory.createToken(s, t));
-    }
-    
     public int getIndex(){
         return i;
     }
 }
+
