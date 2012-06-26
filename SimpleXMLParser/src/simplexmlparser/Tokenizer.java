@@ -4,6 +4,9 @@
  */
 package simplexmlparser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Tamaran
@@ -17,31 +20,27 @@ public class Tokenizer {
                                 STR_QUEST = "?";
     
     private final TokenFactory factory = new TokenFactory();
+    private final List tokens = new ArrayList();
     private final String s;
-    private Token next;
     private int i;
 
     public Tokenizer(String s) {
         this.s = s;
-        readNext();
+        while(i < s.length()){
+            readNext();
+        }
+    }
+
+    public List getTokens() {
+        return tokens;
     }
     
     
-    
-    public boolean hasNext(){
-        return next != null;
-    }
-    
-    public Token getNext(){
-        Token r = next;
-        readNext();
-        return r;
-    }
-    
+
     private void readNext(){
         moveToNextNonSpace();
         if(i >= s.length()){
-            next = null;
+            return;
         }else{
             if(shiftcmp(STR_SLASH)){
                 readSlash();
@@ -76,16 +75,14 @@ public class Tokenizer {
     }
     
     private void readRightBracket(){
-        i++;
-        next = factory.createToken(STR_RIGHT_BRACKET, TokenType.RIGHT_BRACKET);
+        addToken(STR_RIGHT_BRACKET, TokenType.RIGHT_BRACKET);
     }
     
     private void readString(){
         int j = i;
         while(j < s.length()&&!isStringEndChar(s.charAt(j)))
             j++;
-        next = factory.createToken(s.substring(i, j), TokenType.STR);
-        i = j;
+        addToken(s.substring(i, j), TokenType.STR);
     }
     
     private void moveToNextNonSpace(){
@@ -117,6 +114,10 @@ public class Tokenizer {
             return true;
         }
         return false;
+    }
+    
+    private void addToken(String s, TokenType t){
+        tokens.add(factory.createToken(s, t));
     }
     
     public int getIndex(){
